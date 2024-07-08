@@ -46,7 +46,7 @@ docker compose up -d
 docker-compose up -d
 ```
 
-## Using Image from Docker Hub
+## Using Image from Docker Hub (Coming Soon)
 
 If you don't want to build the image yourself, the container can be pulled from the Docker Hub. The container is built with multiarch support and can be run on an x86 machine or a Raspberry Pi.
 
