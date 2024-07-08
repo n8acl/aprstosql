@@ -1,0 +1,16 @@
+{
+
+    "callsign": "<YOUR CALLSIGN HERE>",
+    "filter" :{
+        "latitude": "<YOUR LATITUDE HERE FORMAT XX.X>",
+        "longitude": "<YOUR LONGITUDE HERE FORMAT XX.X>",
+        "range": "<RANGE IN MILES ex: 100>"
+    },
+
+    "mssql": {
+        "host": "<SQL SERVER HOST HERE>",
+        "username": "<SQL SERVER USERNAME HERE>",
+        "password": "<SQL SERVER PASSWORD HERE>"
+    }
+
+}

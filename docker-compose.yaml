@@ -1,0 +1,8 @@
+services:
+
+  aprstosql:
+    build: .
+    container_name: aprstosql
+    volumes:
+      - /<path to your folder>/aprstosql/config.json:/app/config.json
+    restart: unless-stopped

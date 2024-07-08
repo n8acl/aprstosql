@@ -32,12 +32,15 @@ markdown_extensions:
 
 nav:
   - Welcome!: index.md
-  - About APRSNotify: about.md
-  - Getting Started: 
-    - Installation/Setup: Installation.md
-    - Obtaining API Keys: obtaining_api_keys.md
-    - Configuration Utility Guide: configuration_guide.md
-    - Configuration for Club Servers (for Server Admins): club_server_admin_guide.md
-    - Running the Script: running_the_script.md
-  - Change Log (changes prior to 2022): changelog.md
+  - About APRStoSQL: about.md
+  - Installation/Setup: 
+    - Configuration Setting Guide: configuration_guide.md
+    - Standalone Application: installation_standalone.md
+    - Running in Docker: installation_docker.md
+  - Database: 
+    - Description: database_description.md
+    - Helpful Queries: database_queries.md
+    - Data Management: database_datamanagement.md
+  
+  - Change Log: changelog.md
 
