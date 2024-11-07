@@ -15,7 +15,7 @@ git clone https://github.com/n8acl/aprstosql.git
 Next you will need to make sure that the needed software and python libraries are installed. Please run the following commands to make sure:
 
 ```bash
-sudo apt-get install -y python3 python3-pip python3-pymssql python3-sqlalchemy python3-sqlalchemy-utils screen
+sudo apt-get install -y python3 python3-pip screen
 
 cd aprstosql
 

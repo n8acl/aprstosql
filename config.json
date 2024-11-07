@@ -7,10 +7,12 @@
         "range": "<RANGE IN MILES ex: 100>"
     },
 
-    "mssql": {
-        "host": "<SQL SERVER HOST HERE>",
-        "username": "<SQL SERVER USERNAME HERE>",
-        "password": "<SQL SERVER PASSWORD HERE>"
+    "database": {
+    "rdbms_type": "mssql",
+    "credentials": {
+      "username": "<SQL SERVER USERNAME HERE>",
+      "password": "<SQL SERVER PASSWORD HERE>",
+      "host": "<SQL SERVER HOST HERE>"
     }
-
+  }
 }

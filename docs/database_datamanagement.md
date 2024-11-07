@@ -2,7 +2,7 @@
 
 This project was not created with the intent to create a backup of all APRS data over time. Even though we are filtering the APRS data from the stream, this still loads a ton of data over said period of time. You will need to manage the data otherwise the database will bloat and become huge. 
 
-Using the queries below, you can create a stored procedure or job in SQL Server that will delete the data based on a time frame.
+Using the queries below, you can create a stored procedure that will delete the data based on a time frame.
 
 ```sql
 ------------------------------------------

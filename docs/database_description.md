@@ -42,10 +42,3 @@ wx - This holds the weather data from the stream
     raw_data varchar(max),
     time_in datetime2 default(getdate())
 ```
-
-Procedures:
-
-- insert_pos
-    - inserts the position data sent from the script
-- insert_wx
-    - inserts the weather data sent from the script

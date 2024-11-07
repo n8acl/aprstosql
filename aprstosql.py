@@ -1,33 +1,18 @@
 #!/usr/bin/env python3
 
-#################################################################################
-
-# APRStoSQL
-# Developed by: Jeff Lehman, N8ACL
-# Current Version: 07032024
-# https://github.com/n8acl/aprstosql
-
-# Questions? Comments? Suggestions? Contact me one of the following ways:
-# E-mail: n8acl@qsl.net
-# Discord: Ravendos
-# Mastodon: @n8acl@mastodon.radio
-# Website: https://www.qsl.net/n8acl
-
-###################   DO NOT CHANGE BELOW   #########################
-
-################################
-# Import Libraries
-
 import json
 import aprslib
-import pymssql
+import pymssql # SQL Server
+import pymysql # MySQL
 import sqlalchemy
-from sqlalchemy import text as sqltext
-from sqlalchemy.exc import OperationalError
+from sqlalchemy import text as sqltext, select, MetaData, Table
 from sqlalchemy_utils import database_exists, create_database
 from time import sleep
 
-import src.create_database as cdb
+import src.db_functions as dbf
+import src.db_conn as dbc
+import src.db_create as cdb
+
 
 #############################
 # import config json file
@@ -40,28 +25,28 @@ with open("config.json", "r") as read_file:
 ##  SQL Server Connection creation
 
 # define SQL Server connection variables
-sql_host = config['mssql']['host']
-sql_user = config['mssql']['username']
-sql_password = config['mssql']['password']
+sql_host = config['database']['credentials']['host']
+sql_user = config['database']['credentials']['username']
+sql_password = config['database']['credentials']['password']
 sql_database = 'APRS'
-sql_driver = "{ODBC+Driver+18+for+SQL+Server}"
 
 # configure SQL Server Database connection with SQL Alchemy
-db_engine = sqlalchemy.create_engine('mssql+pymssql://{0}:{1}@{2}/{3}'.
-                                               format(sql_user, sql_password, 
-                                                      sql_host, sql_database))
 
+try:
+    db_engine = dbc.db_connection()
+    print("Database Connection established")
+except Exception as e:
+    print("Database Connection could not be established.", e)
 
 if not database_exists(db_engine.url):
-        print("Error Connecting to Database. Does not exist. Creating database....")
-        new_engine = sqlalchemy.create_engine('mssql+pymssql://{0}:{1}@{2}/{3}'.
-                                                   format(sql_user, sql_password, 
-                                                          sql_host, 'master'))
-        
-        with new_engine.connect() as con:
-            create_database(db_engine.url)
-            cdb.create_db(con)
+    print("Error Connecting to Database. Does not exist. Creating database....")
+    cdb.create_db()
 
+metadata = sqlalchemy.MetaData()
+metadata.reflect(bind=db_engine)
+
+pos = metadata.tables['pos']
+wx = metadata.tables['wx']
 
 ################################################################
 ## Define Variables
@@ -69,23 +54,11 @@ linefeed = "\n"
 callsign = config['callsign']
 port = 14580
 passcode = aprslib.passcode(callsign)
+# set_filter ='r/39.1/-84.6/100'
 set_filter ='r/' + config['filter']['latitude'] + "/" + config['filter']['longitude'] + "/" + config['filter']['range']
 
 ################################################################
 ## Define Functions
-
-def exec_proc(conn,proc,values):
-    # Executes SQL Stored Procedures - Doesn't return anything
-
-    connection = conn.raw_connection()
-
-    try:
-        cursor = connection.cursor()
-        cursor.callproc(proc, values)
-        cursor.close()
-        connection.commit()
-    finally:
-        connection.close()
 
 def callback(packet):
     # This function is called whenever a new packet is received
@@ -158,7 +131,7 @@ def callback(packet):
                 values.append(0)
 
             values.append(str(packet).replace("'","''"))
-            proc_name = 'insert_wx'
+            table_name = 'wx'
             gooddata = True
 
     else: # Position Report
@@ -206,12 +179,44 @@ def callback(packet):
             values.append('')
 
         values.append(str(packet).replace("'","''"))
-        proc_name = 'insert_pos'
+        table_name = 'pos'
         gooddata = True
         
-    # Execute SQL insert Procedure
+    # Execute SQL inserts
     if gooddata:
-        exec_proc(db_engine, proc_name, values)
+        values_list = []
+        if table_name == 'wx':
+            sql = wx.insert()
+            values_list= [{'callsign':values[0],
+                            'ssid': values[1],
+                            'tempC': values[2],
+                            'pressure': values[3],
+                            'wind_gust': values[4],
+                            'wind_speed': values[5],
+                            'wind_dir': values[6],
+                            'rain_1h': values[7],
+                            'rain_24h': values[8],
+                            'rain_midnight': values[9],
+                            'humidity': values[10],
+                            'luminosity': values[11],
+                            'raw_data': values[12]
+            
+            }]
+        else:
+            sql = pos.insert()
+            values_list= [{'callsign':values[0],
+                            'ssid': values[1],
+                            'latitude': values[2],
+                            'longitude': values[3],
+                            'course': values[4],
+                           'speed': values[5],
+                            'altitude_ft': values[6],
+                            'comment': values[7],
+                            'raw_data': values[8]
+            
+            }]
+
+        dbf.insert_sql(db_engine, sql, values_list)
 
 def aprs_connect():
     # Connect to APRS-IS and start Processing

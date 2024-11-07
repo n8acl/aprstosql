@@ -1,11 +1,14 @@
 # APRStoSQL
-###### Current Release 07032024
 
 Welcome to the Wiki.
 
-APRStoSQL is a python script designed to stream APRS data into an SQL Server database.
+APRStoSQL is a python script designed to stream APRS data into an Database Server.
 
-The Script will connect to the APRS-IS backbone, filter the data coming in and stream it to a SQL Server database for any other uses. 
+Database Servers Supported:
+- SQL Server
+- MySQL/MariaDB
+
+The Script will connect to the APRS-IS backbone, filter the data coming in and stream it to a database for any other uses. 
 
 There is no processing on the data other then parsing it from the APRS-IS data stream.
 
@@ -30,5 +33,7 @@ If you reach out to me and have an error, please include what error you are gett
 
 ## Change Log 
 Changes Prior to current year have been moved to the [ChangeLog](https://n8acl.github.io/aprstosql/changelog/) on the wiki.
+
+* 11/07/2024: Added Database support for MySQL/MariaDB and SQL Server.
 
 * 07/03/2024: Initial Release

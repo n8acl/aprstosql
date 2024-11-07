@@ -2,6 +2,8 @@
 
 Here are some example queries that you can use to query the data from the database when needed.
 
+These are written for SQL Server, so if you use MySQL, you will have to modify them to work properly.
+
 These are all the queries talked about through out this Wiki all in one place.
 
 ## View the data

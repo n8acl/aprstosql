@@ -1,15 +1,21 @@
 ## Description
 
-APRStoSQL is a python script designed to stream APRS data into an SQL Server database.
+APRStoSQL is a python script designed to stream APRS data into an Database Server.
 
-The Script will connect to the APRS-IS backbone, filter the data coming in and stream it to a SQL Server database for any othtere uses. 
+Database Servers Supported:
+- SQL Server
+- MySQL/MariaDB
+
+The Script will connect to the APRS-IS backbone, filter the data coming in and stream it to a database for any other uses. 
+
+There is no processing on the data other then parsing it from the APRS-IS data stream.
 
 This script can be run either as a standalone application or in Docker.
 
 ### Features
 - Connects to the APRS-IS
 - Filters the data from the backbone
-- Streams the data to an SQL Server Database
+- Streams the data to a Database Server
 
 ### Use Cases
 
@@ -22,4 +28,6 @@ This script was born out of the want to have something I had years ago. Back in 
 
 UI-Vew32 stopped being developed, even though there are some who still use it, but I have since moved on to other clients. But for a long time I wanted a way to have that functionality of sending the data to a database again. So I decided it was time to sit down and recreate the functionality as a stand-alone project. Thus APRStoSQL was born.
 
-This script uses MS SQL Server as the database system. While this is not an open source RDBMS like MySQL/MariaDB and others, it is something that is available for use as a free RDBMS with the developer edition and can be run on either Windows or Linux or in Docker. AS long as you are not using SQL Server in a production environment or way, the delveoper edition is free. I use SQL Server for work and like to be up on current technologies, so I have it running here in my home lab for other things.
+This script does use MS SQL Server as a database system. While this is not an open source RDBMS like MySQL/MariaDB and others, it is something that is available for use as a free RDBMS with the developer edition and can be run on either Windows or Linux or in Docker. AS long as you are not using SQL Server in a production environment or way, the delveoper edition is free. I use SQL Server for work and like to be up on current technologies, so I have it running here in my home lab for other things.
+
+However, MySQL/MariaDB support is also available in the script.

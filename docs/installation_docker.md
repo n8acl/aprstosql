@@ -6,9 +6,9 @@ The following uses docker compose to bring up the container. If you don't want t
 
 All commands are for Linux. If you run Docker a different way, you will need to adjust for that as well.
 
-## Building the Image from Repo
+## Set Configurations
 
-You can build the container image locally if you choose from the repo.
+You can build the container image locally or pull it from Docker Hub. Either way you need to take some steps first.
 
 First, clone the repo:
 
@@ -18,18 +18,21 @@ git clone https://github.com/n8acl/aprstosql.git
 
 Next, follow the instructions in the Configuration Guide (See menu to the left) to setup the config file and then come back here.
 
-There is a sample ```docker-compose.yaml``` file in the repository that you can edit. Open the ```docker-compose.yaml``` and find the ```volumes``` section. 
+There is a sample `docker-compose.yaml` file in the repository that you can edit. Open the `docker-compose.yaml` and find the `volumes` section.
 
-Make sure to set the path to where your config file is located by changing the ```<path to your folder>``` tag.
+Make sure to set the path to where your config file is located by changing the `<path to your folder>` tag.
 
 ```yaml
-    volumes:
-      - /<path to your folder>/aprstosql/config.json:/app/config.json
+volumes:
+  - /<path to your folder>/aprstosql/config.json:/app/config.json
 ```
-Once the configuration file has been set and the ```docker-compose.yaml``` file has been edited, you can build the image using the following command:
+
+## Building the Image from Repo
+
+Once the configuration file has been set and the `docker-compose.yaml` file has been edited, you can build the image using the following command:
 
 ```yaml
-docker-compose build
+docker compose build
 ```
 
 After the the image has been built, bring up the container:
@@ -50,44 +53,24 @@ docker-compose up -d
 
 If you don't want to build the image yourself, the container can be pulled from the Docker Hub. The container is built with multiarch support and can be run on an x86 machine or a Raspberry Pi.
 
-Create a directory to house the needed files:
+Follow the Configuration Guide above in the section called `Set Configurations` to set the config file and then come back here.
 
-```bash
-mkdir aprstosql
-```
+Next, edit the `docker-compose.yaml` file and change the following:
 
-Move into the directory:
-
-```bash
-cd aprstosql
-```
-
-Then, you will need to grab a couple of files from the repo and put them into the directory you just created:
-
-```bash
-wget https://github.com/n8acl/aprstosql/blob/main/config.json
-wget https://github.com/n8acl/aprstosql/blob/main/docker-compose.yaml
-```
-
-Next, follow the Configuration Guide to set the config file and then come back here.
-
-Next, edit the ```docker-compose.yaml``` file and change the following:
-
-- Find the line that says ```build: .```
-    - Change this to ```image: n8acl/aprstosql:latest```
+- Find the line that says `build: .`
+  - Change this to `image: n8acl/aprstosql:latest`
 
 ```yaml
-    build: .
+build: .
 ```
 
-- Find the volumes section. 
-   - Make sure to set the path to your configuration file by changing the ```<path to your folder>``` tag.
-  
+- Find the volumes section.
+  - Make sure to set the path to your configuration file by changing the `<path to your folder>` tag.
+
 ```yaml
-    volumes:
-      - /<path to your folder>/aprstosql/config.json:/app/config.json
+volumes:
+  - /<path to your folder>/aprstosql/config.json:/app/config.json
 ```
-
 
 Save the file.
 
@@ -127,7 +110,7 @@ Once the container is running, you should be able to see a new database called A
 use APRS
 go
 
-select 
+select
     *
 from pos
 order by time_in desc
@@ -140,4 +123,4 @@ order by time_in desc
 
 These should return result grids with the data in the tables and when you re-execute the queries you should see the data update over time.
 
-Once the database has been created, you can stop the container and bring it back up at will as needed. If you drop the APRS database from SQL Server at any point, when you run the container again, it will recreate the database. 
+Once the database has been created, you can stop the container and bring it back up at will as needed. If you drop the APRS database from SQL Server at any point, when you run the container again, it will recreate the database.
